@@ -301,6 +301,7 @@ function delayChange(value) {
 function generateBFSKiller() {
     userConfig.resizeMaze(userConfig.mazeRows, userConfig.mazeCols);
     generateMaze();
+    userConfig.isRunning = false;
 }
 
 function generateDFSKiller() {
@@ -313,11 +314,13 @@ function generateDFSKiller() {
         col: 2
     }]
     generateMaze();
+    userConfig.isRunning = false;
 }
 
 function generateDijkstraKiller() {
     userConfig.resizeMaze(userConfig.mazeRows, userConfig.mazeCols);
     generateMaze();
+    userConfig.isRunning = false;
 }
 
 function generateGBFSKiller() {
@@ -339,7 +342,7 @@ function generateGBFSKiller() {
         userConfig.maze1.GBFSKillerPath();
         userConfig.initAlgoObject(userConfig.maze1);
     }
-
+    userConfig.isRunning = false;
 
 }
 //########################################### Custom select menu ###########################################
