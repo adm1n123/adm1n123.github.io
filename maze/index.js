@@ -6,6 +6,7 @@ $( document ).ready(function () {
     userConfig = new UserConfig();   // initialized the userConfig.
     generateMaze(); // make sure at least one maze is already generated when page loads.
     selectMazeSize('auto');
+
 });
 
 class UserConfig {
@@ -45,6 +46,7 @@ class UserConfig {
 
         this.wallProb = .15 ;
         this.delay = 50;
+        this.slideDuration = 1000;
     }
 
     resizeMaze(rows, cols) {
@@ -287,7 +289,9 @@ async function visualize() {
             await sleep(userConfig.delay);
         }
 
-        alertIfUnreachable();
+        if(alertIfUnreachable() === false && userConfig.maze1Algo.object.isAlgoOver === true)
+            $(".pathStatsDiv").slideDown(userConfig.slideDuration);
+
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
         userConfig.maze1.setIsSearching(true);
@@ -316,7 +320,9 @@ async function visualize() {
             await sleep(userConfig.delay);
         }
 
-        alertIfUnreachable();
+        if(alertIfUnreachable() === false && userConfig.maze1Algo.object.isAlgoOver === true && userConfig.maze2Algo.object.isAlgoOver === true)
+            $(".pathStatsDiv").slideDown(userConfig.slideDuration);
+
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
     }
@@ -348,7 +354,9 @@ async function oneStep() {
             await sleep(userConfig.delay);
         }
 
-        alertIfUnreachable();
+        if(alertIfUnreachable() === false && userConfig.maze1Algo.object.isAlgoOver === true)
+            $(".pathStatsDiv").slideDown(userConfig.slideDuration);
+
         userConfig.maze1.setIsSearching(false);
     } else {    // both maze are present.
         userConfig.maze1.setIsSearching(true);
@@ -369,21 +377,27 @@ async function oneStep() {
             await sleep(userConfig.delay);
         }
 
-        alertIfUnreachable();
+        if(alertIfUnreachable() === false && userConfig.maze1Algo.object.isAlgoOver === true && userConfig.maze2Algo.object.isAlgoOver === true)
+            $(".pathStatsDiv").slideDown(userConfig.slideDuration);
+
         userConfig.maze1.setIsSearching(false);
         userConfig.maze2.setIsSearching(false);
     }
 }
 
 function alertIfUnreachable() {
+    let flag = false;
     if(userConfig.maze1 !== null &&
         userConfig.maze1Algo.object.isAlgoOver === true &&
         userConfig.maze1.path.length === 0) {
-        alert("Destination Unreachable !!!");
+        alert("Maze 1 Destination Unreachable !!!");
+        flag = true;
     }
     if(userConfig.maze2 !== null &&
         userConfig.maze2Algo.object.isAlgoOver === true &&
         userConfig.maze2.path.length === 0) {
-        alert("Destination Unreachable !!!");
+        alert("Maze 2 Destination Unreachable !!!");
+        flag = true;
     }
+    return flag;
 }

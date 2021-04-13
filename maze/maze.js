@@ -441,17 +441,20 @@ class Maze {
         let cellHeight = cell2Rect.y - cell1Rect.y;
         let cellWidth = cell2Rect.x - cell1Rect.x;
         let divHeight = Math.ceil((cellHeight+2) * count); // path stats cell border is 3px but maze cell border is 1px. so 3-1 = 2 extra per cell.
+        userConfig.slideDuration = 1000 + count * 200;
+        if(userConfig.slideDuration > 2000) userConfig.slideDuration = 2000;
 
         div.style.height = divHeight+"px";
 
-        // div.innerHTML = "ksdjfksdfj<br>fdskfjsldfj<br>skdfsdfjlksd";
     }
 
     resetPathStatistics() {
         let div = document.getElementById(this.mazeID+"stats");
-        div.innerHTML = '';
-        div.style.height = "0px";
         this.statistics = [];
+        $(".pathStatsDiv").slideUp(userConfig.slideDuration, function (){
+            div.innerHTML = '';
+            div.style.height = "0px";
+        });
     }
 
     drawOnePathCell() { // make one cell of each path green.
