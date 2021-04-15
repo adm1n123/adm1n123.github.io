@@ -148,6 +148,15 @@ class Maze {
         }
     }
 
+    setCellColor(cell, state) {
+        let element = document.getElementById(this.getMazeID()+'-'+cell.row+'-'+cell.col);
+        if (state === PATH) {
+            element.className = PATH_CLASS;
+        } else if (state === VISITED) {
+            element.className = VISITED_CLASS;
+        }
+    }
+
     flipCellState(cell) {   // flip empty to wall, and wall to empty.
         if (cell.state === EMPTY)
             this.setCellState(cell, WALL)
