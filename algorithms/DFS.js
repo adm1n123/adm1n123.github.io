@@ -4,6 +4,7 @@ class DFS {
         this.stack = [];
         this.closedSet = new Set();
         this.isAlgoOver = false;
+        this.last = null
 
         for (let row = 0; row < mazeObject.rows; row += 1) {
             for (let col = 0; col < mazeObject.cols; col += 1) {
@@ -18,6 +19,7 @@ class DFS {
         let source = mazeObject.getSourceCell();
         source.heuristics.cost = 0;
         this.stack.push(source);
+        this.last = source;
     }
 
     runStep(mazeObject) {
@@ -31,8 +33,14 @@ class DFS {
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.closedSet.add(current);
 
-            if (current.state !== SOURCE && current.state !== DESTINATION)
+            if (current.state !== SOURCE && current.state !== DESTINATION) {
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
+                mazeObject.setCellColor(current, PATH);
+            }
+			if (this.last.state !== SOURCE && this.last.state !== DESTINATION) {
+                mazeObject.setCellColor(this.last, VISITED);
+            }
+            this.last = current;
 
             let neighbors = this.getUnvisitedNeighbours(current, mazeObject);
             let self = this;

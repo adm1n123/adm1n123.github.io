@@ -36,6 +36,7 @@ class GBFS {
         source.heuristics.g = 0;
         source.heuristics.f = source.heuristics.h + source.heuristics.g;
         this.openSet.add(source);
+        this.last = source;
     }
 
     runStep(mazeObject) {
@@ -50,16 +51,14 @@ class GBFS {
             current.heuristics.state = CLOSED;  // closed is internal state same as visited
             this.closedSet.add(current);
 
-            // if (current.state === DESTINATION) {    // unexpected event just return.
-            //     mazeObject.setIsSearching(false);
-            //     return;
-            // }
-            if (current.state !== SOURCE && current.state !== DESTINATION)
+            if (current.state !== SOURCE && current.state !== DESTINATION) {
                 mazeObject.setCellState(current, VISITED); // cell is visited change colour
-
-            if (current.state === DESTINATION) {
-
+                mazeObject.setCellColor(current, PATH);
             }
+            if (this.last.state !== SOURCE && this.last.state !== DESTINATION) {
+                mazeObject.setCellColor(this.last, VISITED);
+            }
+            this.last = current;
 
             let neighbors = this.getAllNeighbours(current, mazeObject);
             let self = this;
